@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "tree-topology-heuristics"
+version = "1.0.0"
+description = "Shortest path between any two nodes in any connected graph. BFS and Dijkstra. Zero dependencies."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "TBD — pending legal review" }
+keywords = ["graph", "pathfinding", "topology", "BFS", "dijkstra", "supply-chain", "skill-tree"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://github.com/UndeadYoshi024/whatcanidew"

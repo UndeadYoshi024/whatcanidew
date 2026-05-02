@@ -1,19 +1,28 @@
 """
-Tree Topology Heuristics — REST API
-====================================
-Three endpoints. Zero configuration. Run anywhere Docker runs.
+Dew — REST API
+==============
+Zero configuration. Run anywhere Docker runs.
 Every routing decision is written to an append-only human-legible activity log.
-Humans read the log. LLMs do not. Feed data forward manually.
+Humans read the log. It never changes, only grows.
 
-docker build -t tree-topology-heuristics .
-docker run -p 8000:8000 -v $(pwd)/logs:/app/logs tree-topology-heuristics
+docker build -t dew -f docker/Dockerfile .
+docker run -p 8000:8000 -v $(pwd)/logs:/app/logs dew
 
-POST /distance   → shortest hop count between two nodes
 POST /path       → shortest route with full node sequence
+POST /distance   → shortest hop count between two nodes
 POST /nearest    → nearest reachable node from a candidate set
+POST /synthesize → intent string → ConstraintProfile (no LLM, no API call)
+POST /route      → full pipeline: intent → weights → terrain → path → log
+POST /load       → load graph from file or directory path
+POST /route-stored → route on the stored graph
+POST /path-stored  → path on the stored graph
+POST /run        → cluster analysis on stored graph
+POST /snapshot   → write .dew snapshot to logs/
+GET  /log        → last 20 lines of activity log
+POST /reorganize → aesthetic directory rename
 GET  /health     → liveness check
 
-Graph format (all endpoints):
+Graph format (path, distance, nearest):
 {
   "graph": {
     "node_id": {
@@ -23,7 +32,6 @@ Graph format (all endpoints):
   },
   "start": "node_id",
   "target": "node_id",
-  "targets": ["node_id", ...],
   "caller": "your_system_name",
   "note": "optional human note for the log"
 }
@@ -62,8 +70,7 @@ def index():
     return FileResponse(os.path.join(_root, "index.html"))
 
 _log_path: str = os.getenv("DEW_LOG_PATH", "logs/routing_decisions.log")
-_api_key: str  = os.getenv("DEW_API_KEY", "")
-_synthesizer   = IntentWeightSynthesizer(api_key=_api_key, log=log)
+_synthesizer   = IntentWeightSynthesizer(log=log)
 
 _stored_graph: Optional[Dict[str, TreeNode]] = None
 _node_to_file: Dict[str, str] = {}
@@ -187,7 +194,7 @@ def synthesize(req: SynthesizeRequest):
 @app.post("/route")
 def route(req: RouteRequest):
     graph = _build_graph(req.graph)
-    result = dew_route(req.intent, graph, req.start, req.target, api_key=_api_key, log_path=_log_path)
+    result = dew_route(req.intent, graph, req.start, req.target, log_path=_log_path)
     return dataclasses.asdict(result)
 
 
@@ -241,7 +248,7 @@ def load(req: LoadRequest):
 def route_stored(req: StoredRouteRequest):
     if _stored_graph is None:
         raise HTTPException(status_code=400, detail="No graph loaded. Call /load first.")
-    result = dew_route(req.intent, _stored_graph, req.start, req.target, api_key=_api_key, log_path=_log_path)
+    result = dew_route(req.intent, _stored_graph, req.start, req.target, log_path=_log_path)
     return dataclasses.asdict(result)
 
 

@@ -9,7 +9,7 @@ COPY intent_weight_synthesizer.py .
 COPY graph_weight_mapper.py .
 COPY entry_point.py .
 
-RUN pip install --no-cache-dir fastapi uvicorn anthropic
+RUN pip install --no-cache-dir fastapi uvicorn
 
 EXPOSE 8000
 

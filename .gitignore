@@ -5,3 +5,8 @@ __pycache__/
 dist/
 node_modules/
 logs/
+.kiro/
+.vscode/
+*.zip
+RePoE/
+repoe_dew/

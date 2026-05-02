@@ -6,7 +6,7 @@ BFS for unweighted graphs. Dijkstra for weighted graphs.
 Path reconstruction. Multi-target nearest-node search.
 
 Install:
-    pip install tree-topology-heuristics
+    pip install dew
 
 Usage:
     from tree_topology_heuristics import TreeTopologyHeuristics, TreeNode

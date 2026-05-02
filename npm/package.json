@@ -1,14 +1,24 @@
 {
   "name": "dewdrops",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Shortest path between any two nodes in any connected graph. BFS and Dijkstra. Zero dependencies.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc"
   },
-  "keywords": ["graph", "pathfinding", "topology", "BFS", "dijkstra", "supply-chain", "skill-tree"],
+  "keywords": [
+    "graph",
+    "pathfinding",
+    "topology",
+    "BFS",
+    "dijkstra",
+    "supply-chain",
+    "skill-tree"
+  ],
   "license": "TBD",
   "devDependencies": {
     "typescript": "^5.0.0"
